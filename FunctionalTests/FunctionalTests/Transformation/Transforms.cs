@@ -22,11 +22,11 @@ namespace FunctionalTests.Transformation
         }
 
         [StepArgumentTransformation]
-        public LocalBrowserType ToBrowserType(string browserName)
+        public BrowserType ToBrowserType(string browserName)
         {
             return
                 EnumExtensions
-                    .GetAll<LocalBrowserType>()
+                    .GetAll<BrowserType>()
                     .FirstOrDefault(t => t.ToString().Equals(browserName.Replace(" ",""), StringComparison.InvariantCultureIgnoreCase));
         }
 

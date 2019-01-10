@@ -12,7 +12,11 @@ namespace FunctionalTests.Steps
         [BeforeScenario]
         public void RegisterDefaultBrowserFactory()
         {
-            Container.RegisterFactoryAs(c => new BrowserHost(HostedBrowserType.Chrome));
+#if RELEASE
+            Container.RegisterFactoryAs(c => BrowserHost.CreateForHostedDriver(HostedBrowserType.Chrome));
+#else
+            Container.RegisterFactoryAs(c => BrowserHost.CreateForLocalDriver(BrowserType.Chrome));
+#endif
         }
 
         [AfterScenario]

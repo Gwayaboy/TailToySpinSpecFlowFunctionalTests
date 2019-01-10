@@ -1,13 +1,6 @@
 ﻿namespace FunctionalTests.Configuration
 {
-    public enum LocalBrowserType
-    {
-        Chrome,
-        FireFox,
-        InternetExplorer,
-    }
-
-    public enum HostedBrowserType
+    public enum BrowserType
     {
         Chrome,
         FireFox,

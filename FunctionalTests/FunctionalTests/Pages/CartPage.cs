@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Linq;
 using TestStack.Seleno.PageObjects;
 
@@ -32,25 +31,32 @@ namespace FunctionalTests.Pages
 
         public int QuantityAt(int position)
         {
-            var rawQuantity = QuantityInputElementAt(position).GetAttribute("value");
+            var rawQuantity = Find
+                                .Element(By.CssSelector($".shopping-cart tbody tr:nth-child({position}) input[type=text].quantity"))
+                                .GetAttribute("value");
             return int.TryParse(rawQuantity, out var result) ? result : 0;
         }
 
         public CartPage UpdateQuantity(string newQuantity, int position)
         {
-            var input = QuantityInputElementAt(position);
-            input.SendKeys(Keys.Control + "a");
-            input.SendKeys(newQuantity);
-            input.SendKeys(Keys.Enter);
-            
+            Execute.Script($"var qtyInput = document.getElementsByClassName('quantity')[{position-1}]; " +
+                           $"qtyInput.setAttribute('value','{newQuantity}');" +
+                           $"qtyInput.form.submit();" +
+                           $"return 0;");
             return this;
         }
 
         #region private members
 
+
         private IWebElement QuantityInputElementAt(int position)
         {
             return Find.Element(By.CssSelector($".shopping-cart tbody tr:nth-child({position}) input[type=text].quantity"));
+        }
+
+        private string QuantityInputCssSelectorAt(int position)
+        {
+            return $".shopping-cart tbody tr:nth-child({position}) input[type=text].quantity";
         }
 
         #endregion

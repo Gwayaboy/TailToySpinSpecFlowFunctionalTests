@@ -16,15 +16,7 @@ namespace FunctionalTests.Configuration
     {
         private SelenoHost _selenoHost = new SelenoHost();
 
-        public BrowserHost(LocalBrowserType localBrowserType) 
-            : this(LocalWebDriverFor(localBrowserType))
-        { }
-
-        public BrowserHost(HostedBrowserType hostedBrowserType)
-           : this(HostedWebDriverFor(hostedBrowserType))
-        { }
-
-        public BrowserHost(Func<RemoteWebDriver> remoteWebDriverFactory)
+        private BrowserHost(Func<RemoteWebDriver> remoteWebDriverFactory)
         {
             _selenoHost
                 .Run(config => config
@@ -32,7 +24,17 @@ namespace FunctionalTests.Configuration
                                 .WithRemoteWebDriver(remoteWebDriverFactory));
         }
 
-        
+        public static BrowserHost CreateForLocalDriver(BrowserType browserType)
+        {
+            return new BrowserHost(LocalWebDriverFor(browserType));
+        }
+
+        public static BrowserHost CreateForHostedDriver(BrowserType browserType)
+        {
+            return new BrowserHost(HostedWebDriverFor(browserType));
+        }
+
+
         public BrowserHost(RemoteBrowserConfiguration configuration) : this(BrowserStackRemoteDriver(configuration))
         { }
 
@@ -75,26 +77,26 @@ namespace FunctionalTests.Configuration
             return new InternetExplorerDriver(options).MaximizeBrowserWindow();
         }
 
-        private static Func<RemoteWebDriver> LocalWebDriverFor(LocalBrowserType browserType)
+        private static Func<RemoteWebDriver> LocalWebDriverFor(BrowserType browserType)
         {
             switch (browserType)
             {
-                case LocalBrowserType.InternetExplorer:
+                case BrowserType.InternetExplorer:
                     return InternetExplorer;
-                case LocalBrowserType.FireFox:
+                case BrowserType.FireFox:
                     return FireFox;
                 default:
                     return Chrome;
             }
         }
 
-        private static Func<RemoteWebDriver> HostedWebDriverFor(HostedBrowserType browserType)
+        private static Func<RemoteWebDriver> HostedWebDriverFor(BrowserType browserType)
         {
             switch (browserType)
             {
-                case HostedBrowserType.InternetExplorer:
+                case BrowserType.InternetExplorer:
                     return HostedIEDriver;
-                case HostedBrowserType.FireFox:
+                case BrowserType.FireFox:
                     return HostedFireFox;
                 default:
                     return HostedChrome;
