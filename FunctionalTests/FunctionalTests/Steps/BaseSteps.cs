@@ -13,7 +13,7 @@ namespace FunctionalTests.Steps
         public void RegisterDefaultBrowserFactory()
         {
 #if RELEASE
-            Container.RegisterFactoryAs(c => BrowserHost.CreateForHostedDriver(HostedBrowserType.Chrome));
+            Container.RegisterFactoryAs(c => BrowserHost.CreateForHostedDriver(BrowserType.Chrome));
 #else
             Container.RegisterFactoryAs(c => BrowserHost.CreateForLocalDriver(BrowserType.Chrome));
 #endif
