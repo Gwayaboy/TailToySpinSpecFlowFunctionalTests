@@ -45,20 +45,5 @@ namespace FunctionalTests.Pages
                            $"return 0;");
             return this;
         }
-
-        #region private members
-
-
-        private IWebElement QuantityInputElementAt(int position)
-        {
-            return Find.Element(By.CssSelector($".shopping-cart tbody tr:nth-child({position}) input[type=text].quantity"));
-        }
-
-        private string QuantityInputCssSelectorAt(int position)
-        {
-            return $".shopping-cart tbody tr:nth-child({position}) input[type=text].quantity";
-        }
-
-        #endregion
     }
 }
